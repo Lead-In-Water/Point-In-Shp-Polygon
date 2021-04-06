@@ -1,3 +1,4 @@
+  
 language: python
 python:
   - "2.7"
@@ -7,6 +8,22 @@ python:
 # command to install dependencies
 install:
   - pip install -r requirements.txt
+  - pip install codecov
+    #For Coverage Report
 # command to run tests
 script:
-  - pytest
+  - export PYTHONPATH=$PYTHONPATH:$(pwd)
+  - python point-test.py
+  - coverage run point-test.py
+branches:
+  only:
+   - master
+after_success:
+    - coveralls
+    - codecov
+    
+notifications:
+  email:
+    recipients: dinesh97@seas.upenn.edu
+    on_success: always
+    on_failure: always
