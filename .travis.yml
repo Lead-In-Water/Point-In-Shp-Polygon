@@ -13,7 +13,7 @@ script:
   - coverage run point-test.py
 branches:
   only:
-   - main
+   - development
 after_success:
     - coveralls
     - codecov
