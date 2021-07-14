@@ -12,7 +12,7 @@ from geojson import Point, Polygon, Feature
 # find the aquifer name given an address and a dictionary of aquifers along with 
 # their coordinates
 
-def contains_coordinate(coordinate, path_to_shp_file):
+def coordinate_aq_code(coordinate, path_to_shp_file):
     """
     checks to see if a given coordinate is within the polygon/multipolygon mapped
     out by a shape file
@@ -22,17 +22,17 @@ def contains_coordinate(coordinate, path_to_shp_file):
     :return: a boolean (whether or not the coordinate is in a given shape file)
     """ 
     if coordinate is None:
-        return False
-    multipol = fiona.open(path_to_shp_file)
+      return False
+    multipol = fiona.open(path_to_aq_VA_shp)
     multi= multipol.next() # only one feature in the shapefile
     point = Feature(geometry=Point((float(coordinate[1]), float(coordinate[0])))) # create point
     # point = Feature(geometry=Point(((-81), (37)))) # create point
     # print(point)
     point = shape(point['geometry'])
     if point.within(shape(multi['geometry'])):
-      return True
-    return False
-
+      print('the aquifer code is', multi['properties']['AQ_CODE'])
+      return multi['properties']['AQ_CODE']
+    return False 
 
 if __name__ == '__main__':
     if (len(sys.argv) != 3):
